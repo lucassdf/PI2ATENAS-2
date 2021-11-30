@@ -163,7 +163,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_trilha_sonora, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_trilha_sonora, ALLEGRO_PLAYMODE_LOOP);
-	al_set_sample_instance_gain(inst_trilha_sonora, 0.3);
+	al_set_sample_instance_gain(inst_trilha_sonora, 0.1);
 
 	//---------------- EFEITO SONORO PROJETIL ------------------
 	ALLEGRO_SAMPLE* sound_projetil = NULL;
@@ -174,7 +174,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_sound_projetil, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_sound_projetil, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_sound_projetil, 1);
+	al_set_sample_instance_gain(inst_sound_projetil, 0.2);
 
 	//---------------- EFEITO WINNER  ------------------
 	ALLEGRO_SAMPLE* winner = NULL;
@@ -186,7 +186,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_winner, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_winner, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_winner, 1);
+	al_set_sample_instance_gain(inst_winner, 0.5);
 
 	//---------------- EFEITO EROOOOOOU  ------------------
 	ALLEGRO_SAMPLE* sound_error = NULL;
@@ -209,20 +209,30 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_bossfight, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_bossfight, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_bossfight, 1);
+	al_set_sample_instance_gain(inst_bossfight, 0.5);
 
-	//---------------- EFEITO DE ANDAR ------------------
-	ALLEGRO_SAMPLE* andar = NULL;
-	ALLEGRO_SAMPLE_INSTANCE* inst_andar = NULL;
+	//---------------- GAMEOVER SOUND ------------------
+	ALLEGRO_SAMPLE* gameover_sound = NULL;
+	ALLEGRO_SAMPLE_INSTANCE* inst_gameover_sound = NULL;
 
-	andar = al_load_sample("andar.ogg");
-	inst_andar = al_create_sample_instance(andar);
+	gameover_sound = al_load_sample("gameover_sound.ogg");
+	inst_gameover_sound = al_create_sample_instance(gameover_sound);
 
-	al_attach_sample_instance_to_mixer(inst_andar, al_get_default_mixer());
+	al_attach_sample_instance_to_mixer(inst_gameover_sound, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_gameover_sound, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_gameover_sound, 1);
 
-	al_attach_sample_instance_to_mixer(inst_andar, al_get_default_mixer());
-	al_set_sample_instance_playmode(inst_andar, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_andar, 1);
+	//---------------- ENDGAME SOUND ------------------
+	ALLEGRO_SAMPLE* endgame = NULL;
+	ALLEGRO_SAMPLE_INSTANCE* inst_endgame = NULL;
+
+	endgame = al_load_sample("endgame.ogg");
+	inst_endgame = al_create_sample_instance(endgame);
+
+	al_attach_sample_instance_to_mixer(inst_endgame, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_endgame, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_endgame, 0.4);
+
 
 	//LOOP CONTENDO A LOGICA DO JOGO
 	srand(time(NULL));
@@ -231,7 +241,8 @@ int main()
 	al_draw_bitmap(imagem1, 0, 0, NULL);
 	al_flip_display();
 
-	bool boss_music = false;
+
+	
 
 	while (!done)
 	{
@@ -242,16 +253,13 @@ int main()
 		al_get_keyboard_state(&keyState);
 		al_play_sample_instance(inst_sound_menu);
 
+
 		if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			done = true;
 		}
 
-		if (boss_music) {
-			al_stop_sample_instance(inst_trilha_sonora);
-			al_stop_sample_instance(inst_winner);
-		}
-
+		
 		//IMPLEMENTACAO DO CODIGO QUE CADA TECLA ACIONA AO SER PRESSIONADA
 		else if (events.type == ALLEGRO_EVENT_KEY_DOWN)
 		{
@@ -434,8 +442,10 @@ int main()
 					al_draw_textf(font, al_map_rgb(255, 255, 255), 580, 15, NULL, "%d", pontos);
 
 					//ACIONAMENTO DO GAMEOVER
-					if (personagem->vida <= 0)
+					if (personagem->vida <= 0) {
 						gameover = true;
+						al_play_sample_instance(inst_gameover_sound);
+					}
 
 					contador = pontos;
 
@@ -482,6 +492,8 @@ int main()
 					}
 					if (contador == 30 && fase == 9)
 					{	
+						
+						
 						proximafase = true;
 						contador = 0;
 					}
@@ -491,6 +503,7 @@ int main()
 					//DESENHO DA TELA DE GAMEOVER
 					if (gameover)
 					{ 
+
 						al_stop_sample_instance(inst_trilha_sonora);
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(imagem3, 0, 0, NULL);
@@ -722,10 +735,14 @@ int main()
 					//DESENHO DA PERGUNTA 8
 					if (proximafase && fase == 8)
 					{
+						
 						al_stop_sample_instance(inst_trilha_sonora);
+						al_stop_sample_instance(inst_gameover_sound);
+						al_stop_sample_instance(inst_endgame);
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta8, 0, 0, NULL);
 						al_draw_textf(font2, al_map_rgb(255, 255, 255), 290, 450, NULL, "RESPONDA E DEPOIS APERTE ENTER PARA CONTINUAR");
+						al_play_sample_instance(inst_bossfight);
 						//al_flip_display();
 						if (tiros[UM] && !respondido[7])
 						{
@@ -754,9 +771,14 @@ int main()
 					//DESENHO DA TELA DE GAME WIN
 					if (proximafase && fase == 9)
 					{
+						
 						al_clear_to_color(al_map_rgb(0, 0, 0));
 						al_draw_bitmap(imagem5, 0, 0, NULL);
 						al_flip_display();
+						al_stop_sample_instance(inst_bossfight);
+						al_stop_sample_instance(inst_gameover_sound);
+						al_stop_sample_instance(inst_trilha_sonora);
+						al_play_sample_instance(inst_endgame);
 
 					}
 
