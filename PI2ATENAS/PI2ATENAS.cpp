@@ -11,7 +11,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <time.h>
 #include <string>
-#include "projeteis.h"
+#include "FuncoesUteis.h"
 #include <sstream>
 using namespace std;
 
@@ -246,7 +246,6 @@ int main()
 	while (!done)
 	{
 		int a = al_get_timer_count(timer2);
-		//cout << a << endl;
 		ALLEGRO_EVENT events;
 		al_wait_for_event(event_queue, &events);
 		al_get_keyboard_state(&keyState);
@@ -391,9 +390,7 @@ int main()
 
 			if (a>1 && a<20)
 			{
-				//al_clear_to_color(al_map_rgb(0, 0, 0));
 				al_draw_bitmap(imagem2, 0, 0, NULL);
-				//al_draw_textf(font2, al_map_rgb(255, 255, 255), 400, 450, NULL, "APERTE ENTER PARA CONTINUAR");
 				al_flip_display();
 			}
 
@@ -403,7 +400,6 @@ int main()
 				al_draw_bitmap(imagem4, 0, 0, NULL);
 				al_draw_textf(font2, al_map_rgb(255, 255, 255), 400, 450, NULL, "APERTE ENTER PARA CONTINUAR");
 				al_flip_display();
-				//inicio = true;
 				if (tiros[ENTER])
 				{
 					inicio = true;
@@ -490,9 +486,7 @@ int main()
 						contador = 0;
 					}
 					if (contador == 30 && fase == 9)
-					{	
-						
-						
+					{			
 						proximafase = true;
 						contador = 0;
 					}
@@ -507,7 +501,6 @@ int main()
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(imagem3, 0, 0, NULL);
 						al_flip_display();
-						//al_draw_textf(font2, al_map_rgb(255, 255, 255), largura / 2, altura / 2, ALLEGRO_ALIGN_CENTRE, "GAME OVER: VOCE PERDEU TODAS AS VIDAS, COMECE NOVAMENTE");
 						al_draw_textf(font, al_map_rgb(255, 255, 255), largura / 2, 360, ALLEGRO_ALIGN_CENTRE, "SEUS PONTOS FORAM: %d", pontos);
 					}
 					//DESENHO DA PERGUNTA 1
@@ -525,9 +518,6 @@ int main()
 							respondido[0] = true;
 							personagem->vida++;
 							pergunta = al_load_bitmap("perguntas/1/4.png");
-
-							//al_draw_bitmap(enter, 400, 450, NULL);
-							//al_flip_display();
 						}
 						if (tiros[DOIS] && !respondido[0])
 						{
@@ -612,7 +602,7 @@ int main()
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta4, 0, 0, NULL);
 						al_draw_textf(font2, al_map_rgb(255, 255, 255), 290, 450, NULL, "RESPONDA E DEPOIS APERTE ENTER PARA CONTINUAR");
-						al_flip_display();
+						//al_flip_display();
 						if (tiros[UM] && !respondido[3])
 						{
 							al_play_sample_instance(inst_sound_error);
@@ -787,20 +777,6 @@ int main()
 						if (gameover)
 						{
 							done = true;
-							/*
-							fase = 1;
-							mapa = al_load_bitmap("mapa.png");
-							enemy = al_load_bitmap("trash.png");
-							InitAtirador(personagem, NUM_PERSONAGEM, "personagem", 5, 5.0);
-							InitBalas(balas_c, NUM_BALAS_C, "personagem");
-							InitBalas(balas_b, NUM_BALAS_B, "personagem");
-							InitBalas(balas_e, NUM_BALAS_E, "personagem");
-							InitBalas(balas_d, NUM_BALAS_D, "personagem");
-							InitAtirador(atirador, NUM_ATIRADOR-7, "atirador", 1, 0.5);
-							InitBalas(balas, NUM_BALASATIRADOR, "atirador");
-							gameover = false;
-							tiros[ENTER] = false;
-							pontos = 0;*/
 						}
 						// INICIALIZACAO DA FASE 2
 						if (proximafase && fase == 1)
@@ -811,7 +787,6 @@ int main()
 							fase++;
 							mapa = al_load_bitmap("mapas/bosque2.png");
 							enemy = al_load_bitmap("inimigos/papel2.png");
-							//lixeira = al_load_bitmap("imagens/azul.png");
 							InitBalas(balas_c, NUM_BALAS_C, "personagem", 10, corBala);
 							InitBalas(balas_b, NUM_BALAS_B, "personagem", 10, corBala);
 							InitBalas(balas_e, NUM_BALAS_E, "personagem", 10, corBala);

@@ -175,7 +175,7 @@
     <ClCompile Include="PI2ATENAS.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="projeteis.h" />
+    <ClInclude Include="FuncoesUteis.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
