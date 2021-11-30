@@ -241,9 +241,6 @@ int main()
 	al_draw_bitmap(imagem1, 0, 0, NULL);
 	al_flip_display();
 
-
-	
-
 	while (!done)
 	{
 		int a = al_get_timer_count(timer2);
@@ -981,17 +978,49 @@ int main()
 	//LIMPEZA DE MEMORIA
 	al_destroy_display(display);
 	al_destroy_timer(timer);
+	al_destroy_timer(timer2);
 	for (int i = 0; i < 12; i++)
 	{
 		al_destroy_bitmap(playerWalk[i]);
 	}
-	//al_destroy_bitmap(enemy);
+	al_destroy_bitmap(enemy);
 	al_destroy_event_queue(event_queue);
 	al_destroy_font(font);
 	al_destroy_font(font2);
 	al_destroy_sample(trilha_sonora);
 	al_destroy_sample_instance(inst_trilha_sonora);
-	
+	al_destroy_sample(sound_menu);
+	al_destroy_sample_instance(inst_sound_menu);
+	al_destroy_sample(sound_projetil);
+	al_destroy_sample_instance(inst_sound_projetil);
+	al_destroy_sample(winner);
+	al_destroy_sample_instance(inst_winner);
+	al_destroy_sample(sound_error);
+	al_destroy_sample_instance(inst_sound_error);
+	al_destroy_sample(bossfight);
+	al_destroy_sample_instance(inst_bossfight);
+	al_destroy_sample(endgame);
+	al_destroy_sample_instance(inst_endgame);
+	al_destroy_sample(gameover_sound);
+	al_destroy_sample_instance(inst_gameover_sound);
+	al_destroy_bitmap(mapa);
+	al_destroy_bitmap(lixeira);
+	al_destroy_bitmap(enter);
+	al_destroy_bitmap(coracao);
+	al_destroy_bitmap(imagem1);
+	al_destroy_bitmap(imagem2);
+	al_destroy_bitmap(imagem3);
+	al_destroy_bitmap(imagem4);
+	al_destroy_bitmap(imagem5);
+	al_destroy_bitmap(pergunta);
+	al_destroy_bitmap(pergunta2);
+	al_destroy_bitmap(pergunta3);
+	al_destroy_bitmap(pergunta4);
+	al_destroy_bitmap(pergunta5);
+	al_destroy_bitmap(pergunta6);
+	al_destroy_bitmap(pergunta7);
+	al_destroy_bitmap(pergunta8);
+
 
 	return 0;
 
