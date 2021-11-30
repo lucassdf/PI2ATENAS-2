@@ -96,13 +96,16 @@ int main()
 	ALLEGRO_FONT* font = al_load_font("fontes/Minecraft.ttf", 25, NULL);
 	ALLEGRO_FONT* font2 = al_load_font("fontes/Minecraft.ttf", 12, NULL);
 
+
 	//BITMAP DO PERSONAGEM
 	ALLEGRO_BITMAP* playerWalk[12];
 	for (int i = 0; i < 12; i++)
 	{
+		
 		std::stringstream str;
 		str << "sprites/" << i + 1 << ".png";
 		playerWalk[i] = al_load_bitmap(str.str().c_str());
+		
 	}
 
 	//BITMAPS DO MAPA, IMAGENS E PERGUNTAS
@@ -140,28 +143,86 @@ int main()
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-	//TRILHA SONORA
+	//---------------- SOUND GAME ------------------
+	ALLEGRO_SAMPLE* sound_menu = NULL;
+	ALLEGRO_SAMPLE_INSTANCE* inst_sound_menu = NULL;
+
+	sound_menu = al_load_sample("sound_menu.ogg");
+	inst_sound_menu = al_create_sample_instance(sound_menu);
+
+	al_attach_sample_instance_to_mixer(inst_sound_menu, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_sound_menu, ALLEGRO_PLAYMODE_LOOP);
+	al_set_sample_instance_gain(inst_sound_menu, 0.3);
+
+	//---------------- TRILHA PINCIPAL ------------------
 	ALLEGRO_SAMPLE* trilha_sonora = NULL;
-	ALLEGRO_SAMPLE* projeteis_lancados = NULL;
-	ALLEGRO_SAMPLE_INSTANCE* inst_projeteis_lancados = NULL;
 	ALLEGRO_SAMPLE_INSTANCE* inst_trilha_sonora = NULL;
+
 	trilha_sonora = al_load_sample("trilha_sonora.ogg");
 	inst_trilha_sonora = al_create_sample_instance(trilha_sonora);
+
 	al_attach_sample_instance_to_mixer(inst_trilha_sonora, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_trilha_sonora, ALLEGRO_PLAYMODE_LOOP);
 	al_set_sample_instance_gain(inst_trilha_sonora, 0.3);
 
+	//---------------- EFEITO SONORO PROJETIL ------------------
 	ALLEGRO_SAMPLE* sound_projetil = NULL;
-
 	ALLEGRO_SAMPLE_INSTANCE* inst_sound_projetil = NULL;
 
 	sound_projetil = al_load_sample("sound_bullet.ogg");
-
 	inst_sound_projetil = al_create_sample_instance(sound_projetil);
 
 	al_attach_sample_instance_to_mixer(inst_sound_projetil, al_get_default_mixer());
-	al_set_sample_instance_playmode(inst_sound_projetil, ALLEGRO_PLAYMODE_BIDIR);
+	al_set_sample_instance_playmode(inst_sound_projetil, _ALLEGRO_PLAYMODE_STREAM_ONCE);
 	al_set_sample_instance_gain(inst_sound_projetil, 1);
+
+	//---------------- EFEITO WINNER  ------------------
+	ALLEGRO_SAMPLE* winner = NULL;
+
+	ALLEGRO_SAMPLE_INSTANCE* inst_winner = NULL;
+
+	winner = al_load_sample("winner.ogg");
+	inst_winner = al_create_sample_instance(winner);
+
+	al_attach_sample_instance_to_mixer(inst_winner, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_winner, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_winner, 1);
+
+	//---------------- EFEITO EROOOOOOU  ------------------
+	ALLEGRO_SAMPLE* sound_error = NULL;
+
+	ALLEGRO_SAMPLE_INSTANCE* inst_sound_error = NULL;
+
+	sound_error = al_load_sample("sound_error.ogg");
+	inst_sound_error = al_create_sample_instance(sound_error);
+
+	al_attach_sample_instance_to_mixer(inst_sound_error, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_sound_error, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_sound_error, 1);
+
+	//---------------- BOSS MUSIC ------------------
+	ALLEGRO_SAMPLE* bossfight = NULL;
+	ALLEGRO_SAMPLE_INSTANCE* inst_bossfight = NULL;
+
+	bossfight = al_load_sample("bossfight.ogg");
+	inst_bossfight = al_create_sample_instance(bossfight);
+
+	al_attach_sample_instance_to_mixer(inst_bossfight, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_bossfight, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_bossfight, 1);
+
+	//---------------- EFEITO DE ANDAR ------------------
+	ALLEGRO_SAMPLE* andar = NULL;
+	ALLEGRO_SAMPLE_INSTANCE* inst_andar = NULL;
+
+	andar = al_load_sample("andar.ogg");
+	inst_andar = al_create_sample_instance(andar);
+
+	al_attach_sample_instance_to_mixer(inst_andar, al_get_default_mixer());
+
+	al_attach_sample_instance_to_mixer(inst_andar, al_get_default_mixer());
+	al_set_sample_instance_playmode(inst_andar, _ALLEGRO_PLAYMODE_STREAM_ONCE);
+	al_set_sample_instance_gain(inst_andar, 1);
 
 	//LOOP CONTENDO A LOGICA DO JOGO
 	srand(time(NULL));
@@ -170,6 +231,8 @@ int main()
 	al_draw_bitmap(imagem1, 0, 0, NULL);
 	al_flip_display();
 
+	bool boss_music = false;
+
 	while (!done)
 	{
 		int a = al_get_timer_count(timer2);
@@ -177,11 +240,16 @@ int main()
 		ALLEGRO_EVENT events;
 		al_wait_for_event(event_queue, &events);
 		al_get_keyboard_state(&keyState);
-		al_play_sample_instance(inst_trilha_sonora);
+		al_play_sample_instance(inst_sound_menu);
 
 		if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			done = true;
+		}
+
+		if (boss_music) {
+			al_stop_sample_instance(inst_trilha_sonora);
+			al_stop_sample_instance(inst_winner);
 		}
 
 		//IMPLEMENTACAO DO CODIGO QUE CADA TECLA ACIONA AO SER PRESSIONADA
@@ -216,16 +284,16 @@ int main()
 			case ALLEGRO_KEY_ENTER:
 				tiros[ENTER] = true;
 				break;
-			case ALLEGRO_KEY_1:
+			case ALLEGRO_KEY_PAD_1:
 				tiros[UM] = true;
 				break;
-			case ALLEGRO_KEY_2:
+			case ALLEGRO_KEY_PAD_2:
 				tiros[DOIS] = true;
 				break;
-			case ALLEGRO_KEY_3:
+			case ALLEGRO_KEY_PAD_3:
 				tiros[TRES] = true;
 				break;
-			case ALLEGRO_KEY_F1:
+			case ALLEGRO_KEY_1:
 				tiros[F1] = true;
 				r = 0;
 				g = 177;
@@ -233,7 +301,7 @@ int main()
 				verde = true;
 				corBala = 1;
 				break;
-			case ALLEGRO_KEY_F2:
+			case ALLEGRO_KEY_2:
 				tiros[F2] = true;
 				r = 195;
 				g = 52;
@@ -241,7 +309,7 @@ int main()
 				vermelho = true;
 				corBala = 2;
 				break;
-			case ALLEGRO_KEY_F3:
+			case ALLEGRO_KEY_3:
 				tiros[F3] = true;
 				r = 249;
 				g = 189;
@@ -249,7 +317,7 @@ int main()
 				amarelo = true;
 				corBala = 3;
 				break;
-			case ALLEGRO_KEY_F4:
+			case ALLEGRO_KEY_4:
 				tiros[F4] = true;
 				r = 0;
 				g = 138;
@@ -257,7 +325,7 @@ int main()
 				azul = true;
 				corBala = 4;
 				break;
-			case ALLEGRO_KEY_F5:
+			case ALLEGRO_KEY_5:
 				tiros[F5] = true;
 				r = 50;
 				g = 30;
@@ -343,6 +411,8 @@ int main()
 
 			if (iniciar)
 			{
+				al_stop_sample_instance(inst_sound_menu);
+				al_play_sample_instance(inst_trilha_sonora);
 				al_draw_bitmap(mapa, 0, 0, NULL);
 
 				if (!gameover && !proximafase)
@@ -411,7 +481,7 @@ int main()
 						contador = 0;
 					}
 					if (contador == 30 && fase == 9)
-					{
+					{	
 						proximafase = true;
 						contador = 0;
 					}
@@ -421,6 +491,7 @@ int main()
 					//DESENHO DA TELA DE GAMEOVER
 					if (gameover)
 					{ 
+						al_stop_sample_instance(inst_trilha_sonora);
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(imagem3, 0, 0, NULL);
 						al_flip_display();
@@ -436,22 +507,26 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[0])
 						{
+							al_play_sample_instance(inst_winner);
 							al_clear_to_color(al_map_rgb(27, 111, 27));
 							tiros[UM] = false;
 							respondido[0] = true;
 							personagem->vida++;
 							pergunta = al_load_bitmap("perguntas/1/4.png");
+
 							//al_draw_bitmap(enter, 400, 450, NULL);
 							//al_flip_display();
 						}
 						if (tiros[DOIS] && !respondido[0])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[DOIS] = false;
 							respondido[0] = true;
 							pergunta = al_load_bitmap("perguntas/1/2.png");
 						}
 						if (tiros[TRES] && !respondido[0])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[TRES] = false;
 							respondido[0] = true;
 							pergunta = al_load_bitmap("perguntas/1/3.png");
@@ -467,18 +542,21 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[1])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[1] = true;
 							pergunta2 = al_load_bitmap("perguntas/2/2.png");
 						}
 						if (tiros[DOIS] && !respondido[1])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[DOIS] = false;
 							respondido[1] = true;
 							pergunta2 = al_load_bitmap("perguntas/2/3.png");
 						}
 						if (tiros[TRES] && !respondido[1])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[TRES] = false;
 							respondido[1] = true;
 							personagem->vida++;
@@ -494,12 +572,14 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[2])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[2] = true;
 							pergunta3 = al_load_bitmap("perguntas/3/2.png");
 						}
 						if (tiros[DOIS] && !respondido[2])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[DOIS] = false;
 							respondido[2] = true;
 							personagem->vida++;
@@ -507,6 +587,7 @@ int main()
 						}
 						if (tiros[TRES] && !respondido[2])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[TRES] = false;
 							respondido[2] = true;
 							pergunta3 = al_load_bitmap("perguntas/3/3.png");
@@ -519,21 +600,24 @@ int main()
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta4, 0, 0, NULL);
 						al_draw_textf(font2, al_map_rgb(255, 255, 255), 290, 450, NULL, "RESPONDA E DEPOIS APERTE ENTER PARA CONTINUAR");
-						//al_flip_display();
+						al_flip_display();
 						if (tiros[UM] && !respondido[3])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[3] = true;
 							pergunta4 = al_load_bitmap("perguntas/4/2.png");
 						}
 						if (tiros[DOIS] && !respondido[3])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[DOIS] = false;
 							respondido[3] = true;
 							pergunta4 = al_load_bitmap("perguntas/4/3.png");
 						}
 						if (tiros[TRES] && !respondido[3])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[TRES] = false;
 							respondido[3] = true;
 							personagem->vida++;
@@ -550,12 +634,14 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[4])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[4] = true;
 							pergunta5 = al_load_bitmap("perguntas/5/2.png");
 						}
 						if (tiros[DOIS] && !respondido[4])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[DOIS] = false;
 							respondido[4] = true;
 							personagem->vida++;
@@ -563,6 +649,7 @@ int main()
 						}
 						if (tiros[TRES] && !respondido[4])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[TRES] = false;
 							respondido[4] = true;
 							pergunta5 = al_load_bitmap("perguntas/5/3.png");
@@ -578,6 +665,7 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[5])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[UM] = false;
 							respondido[5] = true;
 							personagem->vida++;
@@ -585,12 +673,14 @@ int main()
 						}
 						if (tiros[DOIS] && !respondido[5])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[DOIS] = false;
 							respondido[5] = true;
 							pergunta6 = al_load_bitmap("perguntas/6/2.png");
 						}
 						if (tiros[TRES] && !respondido[5])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[TRES] = false;
 							respondido[5] = true;
 							pergunta6 = al_load_bitmap("perguntas/6/3.png");
@@ -606,12 +696,14 @@ int main()
 						//al_flip_display();
 						if (tiros[UM] && !respondido[6])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[6] = true;
 							pergunta7 = al_load_bitmap("perguntas/7/2.png");
 						}
 						if (tiros[DOIS] && !respondido[6])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[DOIS] = false;
 							respondido[6] = true;
 							personagem->vida++;
@@ -619,33 +711,39 @@ int main()
 						}
 						if (tiros[TRES] && !respondido[6])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[TRES] = false;
 							respondido[6] = true;
 							pergunta7 = al_load_bitmap("perguntas/7/3.png");
 						}
 
 					}
+					
 					//DESENHO DA PERGUNTA 8
 					if (proximafase && fase == 8)
 					{
+						al_stop_sample_instance(inst_trilha_sonora);
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta8, 0, 0, NULL);
 						al_draw_textf(font2, al_map_rgb(255, 255, 255), 290, 450, NULL, "RESPONDA E DEPOIS APERTE ENTER PARA CONTINUAR");
 						//al_flip_display();
 						if (tiros[UM] && !respondido[7])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[UM] = false;
 							respondido[7] = true;
 							pergunta8 = al_load_bitmap("perguntas/8/2.png");
 						}
 						if (tiros[DOIS] && !respondido[7])
 						{
+							al_play_sample_instance(inst_sound_error);
 							tiros[DOIS] = false;
 							respondido[7] = true;
 							pergunta8 = al_load_bitmap("perguntas/8/3.png");
 						}
 						if (tiros[TRES] && !respondido[7])
 						{
+							al_play_sample_instance(inst_winner);
 							tiros[TRES] = false;
 							respondido[7] = true;
 							personagem->vida++;
@@ -870,9 +968,8 @@ int main()
 	al_destroy_font(font);
 	al_destroy_font(font2);
 	al_destroy_sample(trilha_sonora);
-	al_destroy_sample(projeteis_lancados);
 	al_destroy_sample_instance(inst_trilha_sonora);
-	al_destroy_sample_instance(inst_projeteis_lancados);
+	
 
 	return 0;
 

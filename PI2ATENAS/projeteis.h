@@ -424,7 +424,7 @@ void InitBalas(Projeteis balas[], int tamanho, string tipo, int velocidade, int 
 	{
 		for (int i = 0; i < tamanho; i++) {
 			balas[i].ID = PROJETIL;
-			balas[i].velocidade = velocidade;
+			balas[i].velocidade = velocidade + 10;
 			balas[i].ativo = false;
 			balas[i].cor = corBala;
 		}
