@@ -65,33 +65,25 @@ void move_personagem(ALLEGRO_KEYBOARD_STATE keyState, Atirador atirador[], int t
 			{
 				atirador[i].y += atirador[i].velocidade;
 				atirador[i].dir = DOWN;
-				//cout << "(" << x << "," << y << ")" << endl;
-				//cout << " , ";
-				//cout << y;
+
 			}
 			else if (al_key_down(&keyState, ALLEGRO_KEY_W) && atirador[i].y >50)
 			{
 				atirador[i].y -= atirador[i].velocidade;
 				atirador[i].dir = UP;
-				//cout << "(" << x << "," << y << ")" << endl;
-				//cout << " , ";
-				//cout << y;
+
 			}
 			else if (al_key_down(&keyState, ALLEGRO_KEY_D) && atirador[i].x < larg - 30)
 			{
 				atirador[i].x += atirador[i].velocidade;
 				atirador[i].dir = RIGHT;
-				//cout << "(" << x << "," << y << ")" << endl;
-				//cout << " , ";
-				//cout << y;
+
 			}
 			else if (al_key_down(&keyState, ALLEGRO_KEY_A) && atirador[i].x > 0)
 			{
 				atirador[i].x -= atirador[i].velocidade;
 				atirador[i].dir = LEFT;
-				//cout << "(" << x << "," << y << ")" << endl;
-				//cout << " , ";
-				//cout << y;
+
 			}
 			else
 				atirador[i].ativo = false;
@@ -112,8 +104,6 @@ void move_personagem(ALLEGRO_KEYBOARD_STATE keyState, Atirador atirador[], int t
 				index = atirador[i].dir;
 
 			
-
-			//*draw = true;
 		}
 		
 	}
@@ -214,7 +204,6 @@ void AtualizaAtirador(Atirador atirador[], float  alt, float larg, int tamanho)
 void DesenhaAtirador(ALLEGRO_BITMAP* enemy, ALLEGRO_BITMAP* playerWalk[12], Atirador atirador[], int tamanho, string tipo, ALLEGRO_FONT* font, ALLEGRO_BITMAP* coracao)
 {
 
-	//ALLEGRO_BITMAP* enemy = al_load_bitmap("trash.png");
 	if (tipo == "atirador")
 	{
 		for (int i = 0; i < tamanho; i++)
@@ -234,12 +223,9 @@ void DesenhaAtirador(ALLEGRO_BITMAP* enemy, ALLEGRO_BITMAP* playerWalk[12], Atir
 		{
 			if (atirador[i].ativo)
 			{
-				//al_draw_bitmap(enemy, atirador[i].x, atirador[i].y, NULL);
 				al_draw_filled_circle(atirador[i].x+20, atirador[i].y+20, 16, al_map_rgba(0,0, 0, 0));
 				al_draw_bitmap(playerWalk[index], atirador[i].x, atirador[i].y, NULL);
 				al_convert_mask_to_alpha(playerWalk[index], al_map_rgb(0, 0, 0));
-				//al_draw_filled_rectangle(atirador[i].x, atirador[i].y, atirador[i].x+32, atirador[i].y+32, al_map_rgb(0, 128, 0));
-				//al_draw_bitmap_region(player, *sourceX, *sourceY * al_get_bitmap_height(player) / 4, 32, 32, atirador[i].x, atirador[i].y, NULL);
 			}
 		}
 	}
@@ -256,14 +242,6 @@ void LiberaTiros(Atirador atirador[], int tamanho, string tipo)
 				atirador[i].x = rand() % 500 + 100;
 				atirador[i].y = rand() % 350 + 100;
 				atirador[i].ativo = true;
-
-				/*if (rand() % 500 == 0)
-				{
-					atirador[i].x = 1;
-					atirador[i].y = 5;
-					atirador[i].ativo = true;
-					break;
-				}*/
 			}
 		}
 	}
@@ -273,17 +251,8 @@ void LiberaTiros(Atirador atirador[], int tamanho, string tipo)
 		{
 			if (!atirador[i].ativo && atirador[i].vida > 0)
 			{
-				//atirador[i].x = 20;
-				//atirador[i].y = 20;
 				atirador[i].ativo = true;
 
-				/*if (rand() % 500 == 0)
-				{
-					atirador[i].x = 1;
-					atirador[i].y = 5;
-					atirador[i].ativo = true;
-					break;
-				}*/
 			}
 		}
 	}
@@ -314,16 +283,6 @@ void BalaColidida(Projeteis balas[], int b_tamanho, Atirador atirador[], int c_t
 							{
 								atirador[j].ativo = false;
 								++* pontos;
-								/*if (tipo == "atirador")
-								{
-									al_show_native_message_box(display, "Error", "GAME OVER: VOCE MORREU", "JOGUE NOVAMENTE", NULL, NULL);
-									*done = true;
-								}
-								if (tipo == "personagem" && j == c_tamanho)
-								{
-									al_show_native_message_box(display, "PARABÉNS", "VOCE DERROTOU TODOS OS INIMIGOS", "PODE PROSSEGUIR SUA JORNADA", NULL, NULL);
-									*done = true;
-								}*/
 							}
 
 						}
@@ -354,16 +313,6 @@ void BalaColidida(Projeteis balas[], int b_tamanho, Atirador atirador[], int c_t
 							{
 								atirador[j].ativo = false;
 								++* pontos;
-								/*if (tipo == "atirador")
-								{
-									al_show_native_message_box(display, "Error", "GAME OVER: VOCE MORREU", "JOGUE NOVAMENTE", NULL, NULL);
-									*done = true;
-								}
-								if (tipo == "personagem" && j == c_tamanho)
-								{
-									al_show_native_message_box(display, "PARABÉNS", "VOCE DERROTOU TODOS OS INIMIGOS", "PODE PROSSEGUIR SUA JORNADA", NULL, NULL);
-									*done = true;
-								}*/
 							}
 
 						}
@@ -440,7 +389,6 @@ void AtualizaBalas(Projeteis balas[], int tamanho_b, Atirador atirador[], int c_
 			{
 				if (atirador[j].ativo)
 				{
-					//balas[i].dir = 4;
 					if (balas[i].dir == 1)
 						balas[i].x -= balas[i].velocidade;
 					else if (balas[i].dir == 2)
