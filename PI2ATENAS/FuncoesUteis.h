@@ -39,14 +39,14 @@ struct Atirador {
 
 void AtiraBalas(Projeteis balas[], int tamanho, Atirador atirador[], int tamanho_a, bool tiros[], string tipo, int dir);
 void DesenhaBalas(Projeteis balas[], int tamanho, int raio, int rgb1, int rgb2, int rgb3);
-void BalaColidida(Projeteis balas[], int b_tamanho, Atirador atirador[], int c_tamanho, string tipo, int *pontos);
+void BalaColidida(Projeteis balas[], int b_tamanho, Atirador atirador[], int c_tamanho, string tipo, int* pontos, int corBala, int corAtirador);
 void InitAtirador(Atirador atirador[], int tamanho, string tipo, int vida, float velocidade, int corAtirador);
 void LiberaTiros(Atirador atirador[], int tamanho, string tipo);
 void AtualizaAtirador(Atirador atirador[], float  alt, float larg, int tamanho);
 void InitBalas(Projeteis balas[], int tamanho, string tipo, int velocidade, int corBala);
-void AtualizaBalas(Projeteis balas[], int tamanho);
-void DesenhaAtirador(ALLEGRO_BITMAP* playerWalk, Atirador atirador[], int tamanho, string tipo, int index, ALLEGRO_FONT* font, ALLEGRO_BITMAP* coracao);
-void move_personagem(ALLEGRO_KEYBOARD_STATE keyState, Atirador atirador[], int tamanho_a, int alt, int larg, bool* draw, int* prevDir, int index);
+void AtualizaBalas(Projeteis balas[], int tamanho_b, Atirador atirador[], int c_tamanho, float larg, float alt);
+void DesenhaAtirador(ALLEGRO_BITMAP* enemy, ALLEGRO_BITMAP* playerWalk[12], Atirador atirador[], int tamanho, string tipo, ALLEGRO_FONT* font, ALLEGRO_BITMAP* coracao);
+void move_personagem(ALLEGRO_KEYBOARD_STATE keyState, Atirador atirador[], int tamanho_a, int alt, int larg, bool* draw);
 
 
 
