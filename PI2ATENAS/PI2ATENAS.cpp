@@ -154,7 +154,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_sound_menu, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_sound_menu, ALLEGRO_PLAYMODE_LOOP);
-	al_set_sample_instance_gain(inst_sound_menu, 0.3);
+	al_set_sample_instance_gain(inst_sound_menu, 0.1);
 
 	//---------------- TRILHA PINCIPAL ------------------
 	ALLEGRO_SAMPLE* trilha_sonora = NULL;
@@ -176,7 +176,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_sound_projetil, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_sound_projetil, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_sound_projetil, 0.2);
+	al_set_sample_instance_gain(inst_sound_projetil, 0.1);
 
 	//---------------- EFEITO WINNER  ------------------
 	ALLEGRO_SAMPLE* winner = NULL;
@@ -188,7 +188,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_winner, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_winner, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_winner, 0.5);
+	al_set_sample_instance_gain(inst_winner, 0.2);
 
 	//---------------- EFEITO EROOOOOOU  ------------------
 	ALLEGRO_SAMPLE* sound_error = NULL;
@@ -211,7 +211,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_bossfight, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_bossfight, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_bossfight, 0.5);
+	al_set_sample_instance_gain(inst_bossfight, 0.1);
 
 	//---------------- GAMEOVER SOUND ------------------
 	ALLEGRO_SAMPLE* gameover_sound = NULL;
@@ -233,7 +233,7 @@ int main()
 
 	al_attach_sample_instance_to_mixer(inst_endgame, al_get_default_mixer());
 	al_set_sample_instance_playmode(inst_endgame, _ALLEGRO_PLAYMODE_STREAM_ONCE);
-	al_set_sample_instance_gain(inst_endgame, 0.4);
+	al_set_sample_instance_gain(inst_endgame, 0.2);
 
 
 	//LOOP CONTENDO A LOGICA DO JOGO
@@ -442,6 +442,7 @@ int main()
 						al_play_sample_instance(inst_gameover_sound);
 					}
 
+
 					contador = pontos;
 
 					//LOGICA PARA PROSSEGUIMENTO DE FASES
@@ -482,6 +483,7 @@ int main()
 					}
 					if (contador == 29 && fase == 8)
 					{
+						pontos = pontos - 1;
 						proximafase = true;
 						contador = 0;
 					}
