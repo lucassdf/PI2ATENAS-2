@@ -52,12 +52,14 @@ int main()
 	al_set_window_position(display, 200, 200);
 
 	//VARIAVEIS DE SUPORTE
-	bool done = false, draw = true, active = false, gameover = false, proximafase = false, iniciar = false, fimdejogo = false, respondido[8] = { false, false, false, false, false, false, false, false };
+	bool done = false, draw = true, active = false, gameover = false, proximafase = false, iniciar = false, fimdejogo = false;
+	bool respondido[8] = { false, false, false, false, false, false, false, false };
 	bool vermelho = false, verde = false, azul = false, amarelo = false, marrom = false;
-	int x = 10, y = 10, moveSpeed = 5, pontos = 0, contador = 0, r = 0, g = 138, b = 200, r2 = 0, g2 = 138, b2 = 200, corBala = 4, corAtirador = 4;
-	int dir = DOWN, dir2 = 1, dir3 = 0, prevDir = 0, fase = 1;
-	bool tiros[] = {false, false, false, false, false, false, false, false, false, false, false, false, false};
+	bool tiros[] = { false, false, false, false, false, false, false, false, false, false, false, false, false };
 	bool historia = true, comandos = true, inicio = false;
+	int x = 10, y = 10, moveSpeed = 5, pontos = 0, contador = 0, fase = 1;
+	int r = 0, g = 138, b = 200, r2 = 0, g2 = 138, b2 = 200, corBala = 4, corAtirador = 4;
+	int dir = DOWN, dir2 = 1, dir3 = 0, prevDir = 0;
 	
 	// ------------ INICIALIZACAO DOS PROTOTIPOS DOS ATIRADORES E PROJETEIS --------------
 	Atirador personagem[NUM_PERSONAGEM];
