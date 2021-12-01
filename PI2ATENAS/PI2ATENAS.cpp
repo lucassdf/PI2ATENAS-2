@@ -505,7 +505,7 @@ int main()
 						al_draw_textf(font, al_map_rgb(255, 255, 255), largura / 2, 360, ALLEGRO_ALIGN_CENTRE, "SEUS PONTOS FORAM: %d", pontos);
 					}
 					//DESENHO DA PERGUNTA 1
-					if (proximafase && fase == 1)
+					if (proximafase && fase == 1 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta, 0, 0, NULL);
