@@ -483,7 +483,6 @@ int main()
 					}
 					if (contador == 29 && fase == 8)
 					{
-						pontos = pontos - 1;
 						proximafase = true;
 						contador = 0;
 					}
