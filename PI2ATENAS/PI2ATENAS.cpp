@@ -537,7 +537,7 @@ int main()
 						
 					}
 					//DESENHO DA PERGUNTA 2
-					if (proximafase && fase == 2)
+					if (proximafase && fase == 2 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta2, 0, 0, NULL);
@@ -567,7 +567,7 @@ int main()
 						}
 					}
 					//DESENHO DA PERGUNTA 3
-					if (proximafase && fase == 3)
+					if (proximafase && fase == 3 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta3, 0, 0, NULL);
@@ -598,7 +598,7 @@ int main()
 
 					}
 					//DESENHO DA PERGUNTA 4
-					if (proximafase && fase == 4)
+					if (proximafase && fase == 4 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta4, 0, 0, NULL);
@@ -629,7 +629,7 @@ int main()
 
 					}
 					//DESENHO DA PERGUNTA 5
-					if (proximafase && fase == 5)
+					if (proximafase && fase == 5 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta5, 0, 0, NULL);
@@ -660,7 +660,7 @@ int main()
 
 					}
 					//DESENHO DA PERGUNTA 6
-					if (proximafase && fase == 6)
+					if (proximafase && fase == 6 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta6, 0, 0, NULL);
@@ -691,7 +691,7 @@ int main()
 
 					}
 					//DESENHO DA PERGUNTA 7
-					if (proximafase && fase == 7)
+					if (proximafase && fase == 7 && !gameover)
 					{
 						al_clear_to_color(al_map_rgb(27, 111, 27));
 						al_draw_bitmap(pergunta7, 0, 0, NULL);
@@ -723,7 +723,7 @@ int main()
 					}
 					
 					//DESENHO DA PERGUNTA 8
-					if (proximafase && fase == 8)
+					if (proximafase && fase == 8 && !gameover)
 					{
 						
 						al_stop_sample_instance(inst_trilha_sonora);
@@ -759,7 +759,7 @@ int main()
 
 					}
 					//DESENHO DA TELA DE GAME WIN
-					if (proximafase && fase == 9)
+					if (proximafase && fase == 9 && !gameover)
 					{
 						
 						al_clear_to_color(al_map_rgb(0, 0, 0));
